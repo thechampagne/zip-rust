@@ -1,9 +1,9 @@
 pub mod raw;
 use std::str;
+use std::ptr;
 use std::ffi::CStr;
 use std::ffi::CString;
 use std::os::raw::c_int;
-
 
 pub struct Zip {
     zip: *mut raw::zip_t
@@ -30,6 +30,13 @@ impl Zip {
 	    Ok(Self {
 		zip: zip
 	    })
+	}
+    }
+
+    pub fn close(&mut self) {
+	unsafe {
+	    raw::zip_close(self.zip);
+	    self.zip = ptr::null_mut();
 	}
     }
 }
