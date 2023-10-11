@@ -45,4 +45,19 @@ impl Zip {
 	    self.zip = ptr::null_mut();
 	}
     }
+
+    pub fn is64(&mut self) -> Result<bool, &'static str> {
+	unsafe {
+	    let is = raw::zip_is64(self.zip);
+	    if is == 1 {
+		Ok(true)
+	    } else if is == 0 {
+		Ok(false)
+	    } else {
+		let err_str = raw::zip_strerror(is);
+		let err_bytes = CStr::from_ptr(err_str).to_bytes();
+		Err(str::from_utf8_unchecked(err_bytes))
+	    }
+	}
+    }
 }
