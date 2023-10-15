@@ -9,12 +9,6 @@ pub struct Zip {
     zip: *mut raw::zip_t
 }
 
-impl Drop for Zip {
-    fn drop(&mut self) {
-	unsafe { raw::zip_close(self.zip); }
-    }
-}
-
 impl Zip {
     pub fn open(
         zipname: &str,
